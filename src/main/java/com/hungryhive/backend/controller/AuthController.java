@@ -19,10 +19,18 @@ public class AuthController {
         this.authService = authService;
     }
 
+    // Test endpoint for Render deployment check
+    @GetMapping("/ping")
+    public String ping() {
+        return "Auth controller working";
+    }
+
     @PostMapping("/send-otp")
     public ResponseEntity<Map<String, Object>> sendOtp(@RequestBody SendOtpRequest request) {
         try {
-            return ResponseEntity.ok(authService.sendOtp(request.getPhoneNumber()));
+            return ResponseEntity.ok(
+                    authService.sendOtp(request.getPhoneNumber())
+            );
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(
                     Map.of("message", e.getMessage())
@@ -34,7 +42,10 @@ public class AuthController {
     public ResponseEntity<Map<String, Object>> verifyOtp(@RequestBody VerifyOtpRequest request) {
         try {
             return ResponseEntity.ok(
-                    authService.verifyOtp(request.getPhoneNumber(), request.getOtp())
+                    authService.verifyOtp(
+                            request.getPhoneNumber(),
+                            request.getOtp()
+                    )
             );
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(
