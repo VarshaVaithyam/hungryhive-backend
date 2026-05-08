@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
 @RestController
 @RequestMapping("/food")
 @CrossOrigin(origins = "*")
@@ -24,17 +25,7 @@ public class FoodController {
     @PostMapping("/add")
     public ResponseEntity<?> addFood(@RequestBody Food food) {
         try {
-            System.out.println("==== FOOD RECEIVED ====");
-            System.out.println("Food Name: " + food.getFoodName());
-            System.out.println("Organization: " + food.getOrganization());
-            System.out.println("Donor Name: " + food.getDonorName());
-            System.out.println("Phone: " + food.getPhoneNumber());
-            System.out.println("Location: " + food.getLocation());
-            System.out.println("Quantity: " + food.getQuantity());
-            System.out.println("Description: " + food.getDescription());
-
             Food savedFood = foodService.addFood(food);
-
             return ResponseEntity.status(201).body(savedFood);
         } catch (Exception e) {
             e.printStackTrace();
@@ -95,7 +86,18 @@ public class FoodController {
     }
 
     @PutMapping("/delete/{id}")
-    public ResponseEntity<?> deleteFood(@PathVariable String id) {
-        return ResponseEntity.ok(foodService.markAsDeleted(id));
+    public ResponseEntity<?> deleteFood(
+            @PathVariable String id,
+            @RequestParam String userId
+    ) {
+        try {
+            Food deletedFood = foodService.markAsDeleted(id, userId);
+            return ResponseEntity.ok(deletedFood);
+        } catch (RuntimeException e) {
+            if (e.getMessage().contains("not allowed")) {
+                return ResponseEntity.status(403).body(e.getMessage());
+            }
+            return ResponseEntity.status(404).body(e.getMessage());
+        }
     }
 }
