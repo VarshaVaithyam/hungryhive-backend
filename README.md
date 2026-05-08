@@ -104,5 +104,10 @@ MongoDB Atlas
 Twilio OTP authentication
 Render cloud hosting
 
+---
 
+# NOTE
+
+The backend is deployed using Render free-tier hosting.  
+Initial API requests may take a few seconds if the server is inactive due to cold-start behavior.
 
