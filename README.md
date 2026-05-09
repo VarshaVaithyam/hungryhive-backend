@@ -110,4 +110,5 @@ Render cloud hosting
 
 The backend is deployed using Render free-tier hosting.  
 Initial API requests may take a few seconds if the server is inactive due to cold-start behavior.
+For OTP authentication, configure your own Twilio credentials and environment variables before deployment.
 
